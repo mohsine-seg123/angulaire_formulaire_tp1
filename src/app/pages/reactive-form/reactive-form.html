@@ -1,0 +1,183 @@
+
+<div class="page-container">
+
+  <mat-card class="form-card">
+
+    <mat-card-header>
+      <mat-card-title>
+        Inscription - Reactive Forms
+      </mat-card-title>
+
+      <mat-card-subtitle>
+        Veuillez remplir les informations suivantes
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <form
+        [formGroup]="registrationForm"
+        (ngSubmit)="onSubmit()"
+      >
+
+        <!-- Nom complet -->
+        <mat-form-field appearance="outline" class="full-width">
+
+          <mat-label>Nom complet</mat-label>
+
+          <input
+            matInput
+            type="text"
+            formControlName="fullname"
+          />
+
+          @if (
+            registrationForm.controls.fullname.invalid &&
+            registrationForm.controls.fullname.touched
+          ) {
+            <mat-error>
+
+              @if (registrationForm.controls.fullname.hasError('required')) {
+                Le nom complet est obligatoire.
+              }
+              @else if (registrationForm.controls.fullname.hasError('minlength')) {
+                Le nom doit contenir au moins 3 caractères.
+              }
+
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field appearance="outline" class="full-width">
+
+          <mat-label>Email</mat-label>
+
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+          />
+
+          @if (
+            registrationForm.controls.email.invalid &&
+            registrationForm.controls.email.touched
+          ) {
+            <mat-error>
+
+              @if (registrationForm.controls.email.hasError('required')) {
+                L'email est obligatoire.
+              }
+              @else if (registrationForm.controls.email.hasError('email')) {
+                Veuillez saisir un email valide.
+              }
+
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+        <!-- Age -->
+        <mat-form-field appearance="outline" class="full-width">
+
+          <mat-label>Âge</mat-label>
+
+          <input
+            matInput
+            type="number"
+            formControlName="age"
+          />
+
+          @if (
+            registrationForm.controls.age.invalid &&
+            registrationForm.controls.age.touched
+          ) {
+            <mat-error>
+
+              @if (registrationForm.controls.age.hasError('required')) {
+                L'âge est obligatoire.
+              }
+              @else if (registrationForm.controls.age.hasError('min')) {
+                Vous devez avoir au moins 18 ans.
+              }
+
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+        <!-- Pays -->
+        <mat-form-field appearance="outline" class="full-width">
+
+          <mat-label>Pays</mat-label>
+
+          <mat-select formControlName="country">
+
+            @for (item of countries; track item.value) {
+              <mat-option [value]="item.value">
+                {{ item.label }}
+              </mat-option>
+            }
+
+          </mat-select>
+
+          @if (
+            registrationForm.controls.country.invalid &&
+            registrationForm.controls.country.touched
+          ) {
+            <mat-error>
+              Veuillez sélectionner un pays.
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+        <!-- Boutons -->
+        <div class="actions">
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="registrationForm.invalid"
+          >
+            S'inscrire
+          </button>
+
+          <button
+            mat-button
+            type="button"
+            (click)="resetForm()"
+          >
+            Réinitialiser
+          </button>
+
+        </div>
+
+      </form>
+
+      <!-- Récapitulatif -->
+      @if (submittedData) {
+
+        <div class="success-message">
+          Inscription réussie !
+        </div>
+
+        <mat-card class="summary-card">
+
+          <mat-card-title>
+            Récapitulatif
+          </mat-card-title>
+
+          <pre>{{ submittedData | json }}</pre>
+
+        </mat-card>
+
+      }
+
+    </mat-card-content>
+
+  </mat-card>
+
+</div>
